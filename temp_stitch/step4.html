@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BiteSense - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#bbcabf",
+                    "surface-dim": "#d4dcd5",
+                    "secondary-fixed-dim": "#9ed2b5",
+                    "secondary-container": "#b7ebce",
+                    "on-primary-fixed": "#002113",
+                    "on-primary-container": "#00422b",
+                    "inverse-primary": "#4edea3",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-highest": "#dde4dd",
+                    "background": "#f4fbf4",
+                    "primary": "#006c49",
+                    "surface-container": "#e8f0e9",
+                    "on-tertiary-fixed": "#2a1700",
+                    "surface-tint": "#006c49",
+                    "on-surface-variant": "#3c4a42",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f4fbf4",
+                    "on-background": "#161d19",
+                    "inverse-surface": "#2b322d",
+                    "secondary-fixed": "#baeed1",
+                    "tertiary": "#855300",
+                    "inverse-on-surface": "#ebf3eb",
+                    "on-secondary-fixed-variant": "#1e4f3a",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-variant": "#dde4dd",
+                    "on-surface": "#161d19",
+                    "on-error-container": "#93000a",
+                    "outline": "#6c7a71",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#3c6c54",
+                    "surface": "#f4fbf4",
+                    "tertiary-container": "#e29100",
+                    "primary-container": "#10b981",
+                    "on-tertiary-container": "#523200",
+                    "primary-fixed": "#6ffbbe",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e3eae3",
+                    "primary-fixed-dim": "#4edea3",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "error": "#ba1a1a",
+                    "secondary": "#376850",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-emerald-50/70 dark:bg-slate-950/70 backdrop-blur-xl flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-emerald-700 dark:text-emerald-400 hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-emerald-800 dark:text-emerald-200 text-xl font-bold tracking-tighter">BiteSense</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-24 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[80%] rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">80%</span>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-32 px-6 max-w-2xl mx-auto w-full">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<h2 class="text-[3.5rem] leading-none font-extrabold tracking-tight text-on-surface mb-4">Personal details</h2>
+<p class="text-on-surface-variant text-lg max-w-md">Help us tailor your nutrition and activity targets by sharing your current body stats.</p>
+</section>
+<!-- Form Section -->
+<div class="space-y-6">
+<!-- Glassmorphism Card 1: Core Stats -->
+<div class="glass-card bg-surface-container-lowest rounded-xl p-8 shadow-[0_-4px_40px_rgba(0,0,0,0.04)] border border-white/20">
+<div class="grid grid-cols-2 gap-8">
+<!-- Age Input -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary px-1">Age</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary text-on-surface font-semibold text-lg placeholder:text-on-surface-variant/30" placeholder="25" type="number"/>
+</div>
+<!-- Gender Select -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary px-1">Gender</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary text-on-surface font-semibold text-lg appearance-none">
+<option>Male</option>
+<option>Female</option>
+<option>Non-binary</option>
+</select>
+</div>
+<!-- Weight Input -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary px-1">Weight (kg)</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary text-on-surface font-semibold text-lg placeholder:text-on-surface-variant/30" placeholder="70" type="number"/>
+</div>
+<!-- Height Input -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary px-1">Height (cm)</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary text-on-surface font-semibold text-lg placeholder:text-on-surface-variant/30" placeholder="175" type="number"/>
+</div>
+</div>
+</div>
+<!-- Glassmorphism Card 2: Activity Level -->
+<div class="glass-card bg-surface-container-lowest rounded-xl p-8 shadow-[0_-4px_40px_rgba(0,0,0,0.04)] border border-white/20">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<label class="text-[10px] font-bold uppercase tracking-widest text-tertiary">Activity Level</label>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Activity Choice -->
+<label class="relative flex items-center gap-4 p-4 rounded-xl bg-surface-container-low hover:bg-secondary-container transition-colors cursor-pointer group">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary bg-white" name="activity" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">Low</p>
+<p class="text-xs text-on-surface-variant">Sedentary job, minimal exercise</p>
+</div>
+</label>
+<label class="relative flex items-center gap-4 p-4 rounded-xl bg-primary-container/10 border-2 border-primary-container flex items-center gap-4 p-4 rounded-xl transition-colors cursor-pointer">
+<input checked="" class="w-5 h-5 text-primary border-outline-variant focus:ring-primary bg-white" name="activity" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">Moderate</p>
+<p class="text-xs text-on-surface-variant">Light exercise 2-3 times per week</p>
+</div>
+<span class="ml-auto material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</label>
+<label class="relative flex items-center gap-4 p-4 rounded-xl bg-surface-container-low hover:bg-secondary-container transition-colors cursor-pointer">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary bg-white" name="activity" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">High</p>
+<p class="text-xs text-on-surface-variant">Active daily, workout 4-5 times per week</p>
+</div>
+</label>
+<label class="relative flex items-center gap-4 p-4 rounded-xl bg-surface-container-low hover:bg-secondary-container transition-colors cursor-pointer">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary bg-white" name="activity" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">Very High</p>
+<p class="text-xs text-on-surface-variant">Professional athlete or physical labor</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Hero image for context -->
+<div class="mt-12 rounded-xl overflow-hidden aspect-[16/9]">
+<img class="w-full h-full object-cover" data-alt="Close-up of a fit person's midsection wearing emerald green sportswear against a minimalist light green background with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5mS5Ux646w5zWexPaHw1menK7PUJEA2-z_Gvuf4y-oxT7_SRwtbwffo0RnGw7QCXO4vgDCQUkS2UiV72CEeSn2Mt9rOAO_7VnCAuB6XHwK2PRqQD0zutki34i6WPeHorZZ3qcLN-yliHBpwauzahzP-oW0jKoav88KDTb0MsJuW9nQ8b_BbMCX3q1iqYTRcy0d3gM4qvyh55_DQa13By1Z_TbqQ52ADXNUDEeqRidEN1yGDw6AHdro0QKtXuUBOfYb8uAp4UKycGz"/>
+</div>
+</main>
+<!-- BottomNavBar as Onboarding Actions -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-between items-center px-10 py-6 bg-emerald-50/70 dark:bg-slate-950/70 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-4px_40px_rgba(0,0,0,0.04)]">
+<button class="text-emerald-800/40 dark:text-emerald-200/40 p-4 hover:brightness-110 transition-all scale-105 active:scale-95 duration-300">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex items-center gap-4">
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-bold text-on-surface-variant">Step 4 of 5</span>
+<button class="bg-gradient-to-br from-emerald-600 to-emerald-400 text-white rounded-full p-4 flex items-center justify-center gap-2 px-8 hover:brightness-110 transition-all scale-105 active:scale-95 duration-300">
+<span class="font-bold uppercase tracking-widest text-[10px]">Continue</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</nav>
+<!-- Floating Background Bio-Luminous Detail -->
+<div class="fixed top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary-container/5 rounded-full blur-[120px] -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-tertiary-container/5 rounded-full blur-[100px] -z-10"></div>
+</body></html>

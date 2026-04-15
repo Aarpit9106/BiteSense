@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#bbcabf",
+                    "surface-dim": "#d4dcd5",
+                    "secondary-fixed-dim": "#9ed2b5",
+                    "secondary-container": "#b7ebce",
+                    "on-primary-fixed": "#002113",
+                    "on-primary-container": "#00422b",
+                    "inverse-primary": "#4edea3",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-highest": "#dde4dd",
+                    "background": "#f4fbf4",
+                    "primary": "#006c49",
+                    "surface-container": "#e8f0e9",
+                    "on-tertiary-fixed": "#2a1700",
+                    "surface-tint": "#006c49",
+                    "on-surface-variant": "#3c4a42",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f4fbf4",
+                    "on-background": "#161d19",
+                    "inverse-surface": "#2b322d",
+                    "secondary-fixed": "#baeed1",
+                    "tertiary": "#855300",
+                    "inverse-on-surface": "#ebf3eb",
+                    "on-secondary-fixed-variant": "#1e4f3a",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-variant": "#dde4dd",
+                    "on-surface": "#161d19",
+                    "on-error-container": "#93000a",
+                    "outline": "#6c7a71",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#3c6c54",
+                    "surface": "#f4fbf4",
+                    "tertiary-container": "#e29100",
+                    "primary-container": "#10b981",
+                    "on-tertiary-container": "#523200",
+                    "primary-fixed": "#6ffbbe",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e3eae3",
+                    "primary-fixed-dim": "#4edea3",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "error": "#ba1a1a",
+                    "secondary": "#376850",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .bio-luminous-bg {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(226, 145, 0, 0.05) 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col bio-luminous-bg">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-emerald-50/70 dark:bg-slate-950/70 backdrop-blur-xl flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-emerald-700 dark:text-emerald-400 hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<span class="text-xl font-bold tracking-tighter text-emerald-800 dark:text-emerald-200">BiteSense</span>
+</div>
+<div class="h-1.5 w-24 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[20%] transition-all duration-500"></div>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-32 px-6 max-w-2xl mx-auto w-full">
+<!-- Progress Indicator -->
+<div class="mb-8">
+<span class="font-label text-[10px] uppercase tracking-widest font-bold text-primary-container">Step 1 of 5</span>
+<h1 class="text-3xl md:text-4xl font-headline font-bold tracking-tight text-on-surface mt-2 leading-tight">
+                What is your primary health goal?
+            </h1>
+<p class="text-on-surface-variant mt-3 text-body-md leading-relaxed">
+                We'll tailor your nutrition plan and daily insights based on your core focus.
+            </p>
+</div>
+<!-- Goal Selection Grid (Asymmetric Bento-ish Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card 1: Weight Loss -->
+<div class="glass-card group relative p-6 rounded-xl border border-outline-variant/10 hover:border-primary-container/40 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-tertiary-container opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div>
+<h3 class="text-lg font-semibold tracking-tight">Weight Loss</h3>
+<p class="text-sm text-on-surface-variant">Calorie deficit &amp; metabolism boost</p>
+</div>
+</div>
+<!-- Card 2: Muscle Gain -->
+<div class="glass-card group relative p-6 rounded-xl border border-outline-variant/10 hover:border-primary-container/40 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold tracking-tight">Muscle Gain</h3>
+<p class="text-sm text-on-surface-variant">Protein focus &amp; hypertrophy</p>
+</div>
+</div>
+<!-- Card 3: Maintenance (Large) -->
+<div class="md:col-span-2 glass-card group relative p-8 rounded-xl border border-outline-variant/10 hover:border-primary-container/40 transition-all duration-300 cursor-pointer overflow-hidden flex items-center gap-6">
+<div class="p-5 rounded-full bg-primary/10 text-primary group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">balance</span>
+</div>
+<div class="flex-grow">
+<h3 class="text-xl font-semibold tracking-tight">Maintenance</h3>
+<p class="text-on-surface-variant">Sustainable habits &amp; steady energy</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- Card 4: Longevity -->
+<div class="glass-card group relative p-6 rounded-xl border border-outline-variant/10 hover:border-primary-container/40 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold tracking-tight">Longevity</h3>
+<p class="text-sm text-on-surface-variant">Cellular health &amp; anti-aging</p>
+</div>
+</div>
+<!-- Card 5: Diabetic Friendly -->
+<div class="glass-card group relative p-6 rounded-xl border border-outline-variant/10 hover:border-primary-container/40 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<div class="p-3 rounded-full bg-tertiary/10 text-tertiary group-hover:bg-tertiary-container group-hover:text-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined">bloodtype</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-tertiary-fixed text-on-tertiary-fixed-variant">Specialized</span>
+</div>
+<div>
+<h3 class="text-lg font-semibold tracking-tight">Diabetic Friendly</h3>
+<p class="text-sm text-on-surface-variant">Glycemic control &amp; stability</p>
+</div>
+</div>
+</div>
+<!-- Decorative Luminous Element -->
+<div class="mt-12 p-6 rounded-xl bg-surface-container-low border border-outline-variant/5 flex items-center gap-4">
+<img class="w-16 h-16 rounded-full object-cover shadow-xl" data-alt="abstract macro photography of green leaf cells with glowing bio-luminescent light particles and soft organic textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_b5oP3Xkq-7QqReMiGFIu5dEG1xcVIhfRZroZJQOBJQ7Na5_RjRhjp3QcFAKtOiBpbebiKWDD2ikqMq0pyCq37HD5iNBiirPCKJdd9s6Ch8-SHVpByH1412C3H0zjor1w68UO63voGehx3sRBKT7SfJc1SFk3jdMhFmpkYCiGvYo_FORAySl0WCozq5_wGpL2TJxvyGZTlSJvpSBrKtYEr_M7g4J4uw8SWPCDuXZNIapgCDtYAupNyNZthobvkOUGVZeQlHry1aZi"/>
+<div>
+<p class="text-sm font-medium text-on-surface leading-tight">BiteSense Bio-Engine</p>
+<p class="text-xs text-on-surface-variant mt-1">Our AI analyzes your metabolic signature to match your nutrition to your biological goal.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Action Row) -->
+<nav class="fixed bottom-0 w-full z-50 bg-emerald-50/70 dark:bg-slate-950/70 backdrop-blur-xl flex justify-between items-center px-10 py-6 rounded-t-[3rem] shadow-[0_-4px_40px_rgba(0,0,0,0.04)]">
+<button class="text-emerald-800/40 dark:text-emerald-200/40 p-4 hover:brightness-110 transition-all scale-105 active:scale-95 transition-all duration-300">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-variant"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-variant"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-variant"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-variant"></span>
+</div>
+<button class="bg-gradient-to-br from-emerald-600 to-emerald-400 text-white rounded-full p-4 hover:brightness-110 transition-all scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-emerald-600/20">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</nav>
+</body></html>
