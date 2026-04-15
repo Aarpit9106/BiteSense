@@ -65,7 +65,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
-          className="mt-10"
+          className="mt-10 space-y-3"
         >
           <Link href="/onboarding">
             <Button size="xl" className="group">
@@ -73,10 +73,17 @@ export default function Home() {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
             </Button>
           </Link>
+          <div>
+            <Link href="/login">
+              <Button variant="ghost" size="md">
+                Already have an account? Sign in
+              </Button>
+            </Link>
+          </div>
         </motion.div>
 
         <p className="text-xs text-muted-foreground/50 mt-6">
-          No account needed · Free to use
+          Magic link sign-in · No password needed
         </p>
       </motion.div>
     </main>

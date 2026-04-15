@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User, LogOut, ChevronRight, type LucideIcon, Target, Leaf, Dumbbell, UserCircle } from "lucide-react";
 import { toast } from "sonner";
+import { createClient } from "@/utils/supabase/client";
 import { PageHeader } from "@/components/ui/page-header";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -89,9 +90,15 @@ export default function ProfilePage() {
             variant="destructive"
             size="lg"
             className="w-full"
-            onClick={() => {
-              toast("Signed out", { description: "You've been logged out." });
-              router.push("/");
+            onClick={async () => {
+              try {
+                const supabase = createClient();
+                await supabase.auth.signOut();
+                toast("Signed out", { description: "You've been logged out." });
+                router.push("/login");
+              } catch {
+                toast.error("Sign out failed");
+              }
             }}
           >
             <LogOut className="w-4 h-4" />

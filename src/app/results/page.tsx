@@ -6,10 +6,14 @@ import { motion } from "framer-motion";
 import {
   CheckCircle2,
   AlertTriangle,
-  Info,
   Dumbbell,
   ChevronDown,
   ScanLine,
+  ArrowRightLeft,
+  Zap,
+  Brain,
+  HeartPulse,
+  Shield,
 } from "lucide-react";
 import { toast } from "sonner";
 import { processMenuScanner, SynthesizedResponse } from "@/ai/recommendationEngine";
@@ -17,6 +21,7 @@ import type { OnboardingData } from "@/types/onboarding";
 import { PageHeader } from "@/components/ui/page-header";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { MacroPill } from "@/components/ui/macro-pill";
 import { ScoreRing } from "@/components/ui/score-ring";
 import { SkeletonResults } from "@/components/ui/skeleton";
@@ -36,7 +41,7 @@ const MOCK_PROFILE: OnboardingData = {
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
 };
 
 const fadeUp = {
@@ -44,13 +49,98 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
 };
 
-// Expandable dish card
+/* ─── Macro Bar Chart ─── */
+function MacroBarChart({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
+  const total = macros.protein + macros.carbs + macros.fat || 1;
+  const bars = [
+    { label: "Protein", value: macros.protein, pct: (macros.protein / total) * 100, color: "bg-orange-500" },
+    { label: "Carbs", value: macros.carbs, pct: (macros.carbs / total) * 100, color: "bg-sky-500" },
+    { label: "Fat", value: macros.fat, pct: (macros.fat / total) * 100, color: "bg-purple-500" },
+  ];
+
+  return (
+    <div className="space-y-2.5 mt-3">
+      {bars.map((bar) => (
+        <div key={bar.label} className="flex items-center gap-2.5">
+          <span className="text-[10px] font-medium text-muted-foreground w-12 shrink-0">{bar.label}</span>
+          <div className="flex-1 h-2 rounded-full bg-border/30 overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${bar.pct}%` }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" as const }}
+              className={cn("h-full rounded-full", bar.color)}
+            />
+          </div>
+          <span className="text-[10px] font-bold tabular-nums w-8 text-right">{bar.value}g</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Score Breakdown ─── */
+function ScoreBreakdown({ analysis }: { analysis: RecommendationResult["analysis"] }) {
+  const scores = [
+    { label: "Nutrition", score: analysis.nutritionistScore * 10, icon: Zap, color: "text-emerald-600" },
+    { label: "Fitness", score: analysis.fitnessScore * 10, icon: Dumbbell, color: "text-orange-600" },
+    { label: "Longevity", score: analysis.longevityScore * 10, icon: Brain, color: "text-purple-600" },
+    { label: "Medical", score: analysis.medicalScore * 10, icon: Shield, color: "text-sky-600" },
+  ];
+
+  return (
+    <div className="grid grid-cols-4 gap-2 mt-3">
+      {scores.map((s) => (
+        <div key={s.label} className="flex flex-col items-center gap-1">
+          <ScoreRing score={s.score} size={36} strokeWidth={3}>
+            <s.icon className={cn("w-3 h-3", s.color)} />
+          </ScoreRing>
+          <span className="text-[9px] font-medium text-muted-foreground">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Healthier Swap Card ─── */
+function HealthierSwap({
+  avoid,
+  suggestion,
+}: {
+  avoid: RecommendationResult;
+  suggestion: RecommendationResult;
+}) {
+  return (
+    <div className="flex items-stretch gap-2 mt-2">
+      <div className="flex-1 p-3 rounded-xl bg-red-500/5 border border-red-500/10">
+        <p className="text-xs font-semibold line-through opacity-60">{avoid.dish.name}</p>
+        <p className="text-[10px] text-muted-foreground mt-0.5">
+          {avoid.analysis.estimatedCalories} kcal
+        </p>
+      </div>
+      <div className="flex items-center">
+        <ArrowRightLeft className="w-3.5 h-3.5 text-muted-foreground" />
+      </div>
+      <div className="flex-1 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+        <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+          {suggestion.dish.name}
+        </p>
+        <p className="text-[10px] text-emerald-600/70 mt-0.5">
+          {suggestion.analysis.estimatedCalories} kcal
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Expandable Dish Card ─── */
 function DishCard({
   item,
   accent = "emerald",
+  showBreakdown = false,
 }: {
   item: RecommendationResult;
   accent?: "emerald" | "orange" | "red";
+  showBreakdown?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const colorMap = {
@@ -58,53 +148,28 @@ function DishCard({
     orange: "border-orange-500/20 bg-orange-500/[0.03]",
     red: "border-red-200/50 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/10",
   };
-  const reasoningBg = {
-    emerald: "bg-emerald-500/8 border-emerald-500/15 text-emerald-800 dark:text-emerald-300",
-    orange: "bg-orange-500/8 border-orange-500/15 text-orange-800 dark:text-orange-300",
-    red: "bg-red-500/8 border-red-500/15 text-red-800 dark:text-red-300",
+  const reasoningIcon = {
+    emerald: "text-emerald-600",
+    orange: "text-orange-600",
+    red: "text-red-600",
   };
 
   return (
-    <GlassCard
-      padding="none"
-      className={cn("overflow-hidden", colorMap[accent])}
-    >
+    <GlassCard padding="none" className={cn("overflow-hidden", colorMap[accent])}>
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full text-left p-5 flex items-start gap-4"
       >
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-base tracking-tight">
-            {item.dish.name}
-          </h3>
+          <h3 className="font-bold text-base tracking-tight">{item.dish.name}</h3>
           <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
             {item.dish.description}
           </p>
           <div className="flex flex-wrap gap-1.5 mt-3">
-            <MacroPill
-              label=""
-              value={item.analysis.estimatedCalories}
-              unit=" kcal"
-              color="emerald"
-            />
-            <MacroPill
-              label="P"
-              value={item.analysis.macros.protein}
-              unit="g"
-              color="orange"
-            />
-            <MacroPill
-              label="C"
-              value={item.analysis.macros.carbs}
-              unit="g"
-              color="blue"
-            />
-            <MacroPill
-              label="F"
-              value={item.analysis.macros.fat}
-              unit="g"
-              color="purple"
-            />
+            <MacroPill label="" value={item.analysis.estimatedCalories} unit=" kcal" color="emerald" />
+            <MacroPill label="P" value={item.analysis.macros.protein} unit="g" color="orange" />
+            <MacroPill label="C" value={item.analysis.macros.carbs} unit="g" color="blue" />
+            <MacroPill label="F" value={item.analysis.macros.fat} unit="g" color="purple" />
           </div>
         </div>
         <ChevronDown
@@ -115,29 +180,31 @@ function DishCard({
         />
       </button>
 
-      {/* Expandable reasoning */}
       <motion.div
         initial={false}
         animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
         transition={{ duration: 0.25 }}
         className="overflow-hidden"
       >
-        <div
-          className={cn(
-            "mx-5 mb-5 p-3.5 rounded-xl border text-xs leading-relaxed",
-            reasoningBg[accent]
-          )}
-        >
-          <div className="flex gap-2 items-start">
-            <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 opacity-60" />
-            <p>{item.analysis.reasoning}</p>
+        <div className="px-5 pb-5 space-y-3">
+          {/* Reasoning */}
+          <div className="flex gap-2 items-start p-3 rounded-xl bg-surface-container/50 text-xs leading-relaxed">
+            <HeartPulse className={cn("w-3.5 h-3.5 mt-0.5 shrink-0", reasoningIcon[accent])} />
+            <p className="text-muted-foreground">{item.analysis.reasoning}</p>
           </div>
+
+          {/* Macro Distribution Chart */}
+          <MacroBarChart macros={item.analysis.macros} />
+
+          {/* Score Breakdown */}
+          {showBreakdown && <ScoreBreakdown analysis={item.analysis} />}
         </div>
       </motion.div>
     </GlassCard>
   );
 }
 
+/* ─── Main Results Page ─── */
 export default function ResultsPage() {
   const router = useRouter();
   const [results, setResults] = useState<SynthesizedResponse | null>(null);
@@ -147,17 +214,23 @@ export default function ResultsPage() {
   useEffect(() => {
     const analyze = async () => {
       try {
-        const data = await processMenuScanner("mock-image-data", MOCK_PROFILE);
+        // Get the scanned image from sessionStorage
+        const imageData = sessionStorage.getItem("bitesense_scan_image") || "mock-image-data";
+
+        const data = await processMenuScanner(imageData, MOCK_PROFILE);
         setResults(data);
-        toast.success("Analysis complete", {
-          description: `Found ${data.best.length + data.highProtein.length + data.avoid.length + data.healthy.length} menu items`,
+
+        // Clear stored image
+        sessionStorage.removeItem("bitesense_scan_image");
+
+        const modeLabel = data.meta.mode === "live" ? "AI Analysis" : "Demo Mode";
+        toast.success(`${modeLabel} complete`, {
+          description: `${data.meta.totalDishes} dishes analyzed`,
         });
       } catch (e) {
         console.error(e);
         setError(true);
-        toast.error("Analysis failed", {
-          description: "Please try scanning again.",
-        });
+        toast.error("Analysis failed", { description: "Please try scanning again." });
       } finally {
         setLoading(false);
       }
@@ -192,18 +265,12 @@ export default function ResultsPage() {
     );
   }
 
-  const totalDishes =
-    results.best.length +
-    results.highProtein.length +
-    results.avoid.length +
-    results.healthy.length;
-
-  // Calculate average health score from best + healthy items
-  const goodItems = [...results.best, ...results.healthy, ...results.highProtein];
+  // Score calculation
+  const allGood = [...results.best, ...results.healthy, ...results.highProtein];
   const avgScore =
-    goodItems.length > 0
+    allGood.length > 0
       ? Math.round(
-          goodItems.reduce(
+          allGood.reduce(
             (acc, i) =>
               acc +
               (i.analysis.nutritionistScore +
@@ -211,13 +278,24 @@ export default function ResultsPage() {
                 i.analysis.longevityScore) *
                 3.33,
             0
-          ) / goodItems.length
+          ) / allGood.length
         )
       : 0;
 
+  // Find a suggestion for swap (best item if available)
+  const bestSwap = results.best[0] || results.healthy[0];
+
   return (
     <div className="min-h-screen bg-background bio-luminous-bg text-foreground pb-28">
-      <PageHeader title="Recommendations" backHref="/dashboard" />
+      <PageHeader
+        title="Recommendations"
+        backHref="/dashboard"
+        rightAction={
+          <Badge variant={results.meta.mode === "live" ? "success" : "warning"} size="sm">
+            {results.meta.mode === "live" ? "AI" : "Demo"}
+          </Badge>
+        }
+      />
 
       <motion.main
         variants={stagger}
@@ -225,18 +303,40 @@ export default function ResultsPage() {
         animate="show"
         className="px-6 py-6 max-w-2xl mx-auto space-y-8"
       >
-        {/* Summary Bar */}
-        <motion.div variants={fadeUp} className="flex items-center gap-4">
-          <ScoreRing score={Math.min(avgScore, 100)} size={56} strokeWidth={4} />
-          <div>
-            <p className="font-bold text-base">Menu Health Score</p>
-            <p className="text-xs text-muted-foreground">
-              {totalDishes} dishes analyzed · {results.best.length} recommended
-            </p>
-          </div>
+        {/* ─── Hero Summary ─── */}
+        <motion.div variants={fadeUp}>
+          <GlassCard variant="elevated" padding="md" className="relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/8 blur-3xl rounded-full pointer-events-none" />
+            <div className="flex items-center gap-5 relative">
+              <ScoreRing score={Math.min(avgScore, 100)} size={72} strokeWidth={5}>
+                <span className="text-lg font-bold">{Math.min(avgScore, 100)}</span>
+              </ScoreRing>
+              <div>
+                <p className="font-bold text-lg">Menu Health Score</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {results.meta.totalDishes} dishes analyzed · {results.best.length} recommended
+                </p>
+                {results.meta.mode === "live" && results.meta.model && (
+                  <p className="text-[10px] text-muted-foreground/50 mt-1">
+                    Powered by {results.meta.model}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Quick macro summary of best item */}
+            {results.best[0] && (
+              <div className="mt-4 pt-4 border-t border-border/30">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2">
+                  Top Pick Macros
+                </p>
+                <MacroBarChart macros={results.best[0].analysis.macros} />
+              </div>
+            )}
+          </GlassCard>
         </motion.div>
 
-        {/* BEST FOR YOU */}
+        {/* ─── Best For You ─── */}
         {results.best.length > 0 && (
           <motion.section variants={fadeUp} className="space-y-3">
             <div className="flex items-center gap-2">
@@ -247,13 +347,13 @@ export default function ResultsPage() {
             </div>
             <div className="space-y-2.5">
               {results.best.map((item) => (
-                <DishCard key={item.dish.id} item={item} accent="emerald" />
+                <DishCard key={item.dish.id} item={item} accent="emerald" showBreakdown />
               ))}
             </div>
           </motion.section>
         )}
 
-        {/* HIGH PROTEIN */}
+        {/* ─── High Protein ─── */}
         {results.highProtein.length > 0 && (
           <motion.section variants={fadeUp} className="space-y-3">
             <div className="flex items-center gap-2">
@@ -270,7 +370,7 @@ export default function ResultsPage() {
           </motion.section>
         )}
 
-        {/* AVOID */}
+        {/* ─── Avoid + Healthier Swaps ─── */}
         {results.avoid.length > 0 && (
           <motion.section variants={fadeUp} className="space-y-3">
             <div className="flex items-center gap-2">
@@ -281,7 +381,14 @@ export default function ResultsPage() {
             </div>
             <div className="space-y-2.5">
               {results.avoid.map((item) => (
-                <DishCard key={item.dish.id} item={item} accent="red" />
+                <div key={item.dish.id}>
+                  <DishCard item={item} accent="red" />
+                  {bestSwap && (
+                    <div className="mt-1.5 px-1">
+                      <HealthierSwap avoid={item} suggestion={bestSwap} />
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </motion.section>

@@ -50,7 +50,14 @@ export default function ScanMenuPage() {
     (base64Image: string) => {
       setIsScanning(true);
       setScanStep(0);
-      void base64Image; // Future: pass to AI
+
+      // Store image for the results page to process
+      try {
+        sessionStorage.setItem("bitesense_scan_image", base64Image);
+      } catch {
+        // sessionStorage may be full for large images — proceed anyway
+        console.warn("Could not store image in sessionStorage");
+      }
 
       // Multi-step scanning feedback
       const steps = [

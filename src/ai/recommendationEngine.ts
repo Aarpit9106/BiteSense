@@ -16,14 +16,22 @@ export type SynthesizedResponse = {
   highProtein: RecommendationResult[];
   fatLoss: RecommendationResult[];
   longevity: RecommendationResult[];
+  meta: {
+    mode: "live" | "mock";
+    model?: string;
+    totalDishes: number;
+  };
 };
 
-export async function processMenuScanner(imageBase64: string, userProfile: OnboardingData): Promise<SynthesizedResponse> {
-  const dishes = await extractMenuFromImage(imageBase64);
-  
-  const analyzed: RecommendationResult[] = dishes.map(dish => ({
+export async function processMenuScanner(
+  imageBase64: string,
+  userProfile: OnboardingData
+): Promise<SynthesizedResponse> {
+  const extraction = await extractMenuFromImage(imageBase64);
+
+  const analyzed: RecommendationResult[] = extraction.dishes.map((dish) => ({
     dish,
-    analysis: runAgentsPipeline(dish, userProfile)
+    analysis: runAgentsPipeline(dish, userProfile),
   }));
 
   const response: SynthesizedResponse = {
@@ -32,26 +40,31 @@ export async function processMenuScanner(imageBase64: string, userProfile: Onboa
     avoid: [],
     highProtein: [],
     fatLoss: [],
-    longevity: []
+    longevity: [],
+    meta: {
+      mode: extraction.mode,
+      model: extraction.model,
+      totalDishes: extraction.dishes.length,
+    },
   };
 
-  analyzed.forEach(item => {
+  analyzed.forEach((item) => {
     // Check if it should be avoided first
     if (item.analysis.medicalScore === 0 || item.analysis.nutritionistScore <= 3) {
       response.avoid.push(item);
-      return; // Skip sorting into positive categories
+      return;
     }
 
     // High Protein
     if (item.analysis.tags.includes("High Protein")) {
       response.highProtein.push(item);
     }
-    
+
     // Fat Loss
     if (item.analysis.tags.includes("Fat Loss")) {
       response.fatLoss.push(item);
     }
-    
+
     // Longevity
     if (item.analysis.longevityScore >= 7) {
       response.longevity.push(item);
@@ -63,11 +76,11 @@ export async function processMenuScanner(imageBase64: string, userProfile: Onboa
     }
 
     // Best (Overall composite score based on user goal)
-    const compositeScore = 
-      item.analysis.nutritionistScore + 
-      item.analysis.fitnessScore + 
+    const compositeScore =
+      item.analysis.nutritionistScore +
+      item.analysis.fitnessScore +
       item.analysis.longevityScore;
-    
+
     if (compositeScore > 21) {
       response.best.push(item);
     }
