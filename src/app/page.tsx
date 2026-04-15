@@ -1,36 +1,84 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Utensils } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles, ScanLine, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const features = [
+  { icon: ScanLine, label: "AI-Powered" },
+  { icon: Sparkles, label: "Personalized" },
+  { icon: Shield, label: "Privacy-First" },
+];
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-background bio-luminous-bg text-center relative overflow-hidden">
-      {/* Decorative Blob */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 dark:bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
+      {/* Decorative Blobs */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/8 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-amber-500/5 blur-[80px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 glass-card p-10 md:p-14 rounded-[3rem] border border-border/50 max-w-2xl w-full mx-auto drop-shadow-xl">
-        <div className="mx-auto bg-emerald-500/10 w-20 h-20 rounded-full flex items-center justify-center mb-6">
-          <Utensils className="w-10 h-10 text-emerald-500" />
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground mb-4 font-headline">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" as const }}
+        className="relative z-10 max-w-lg w-full mx-auto"
+      >
+        {/* Logo Mark */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
+          className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mb-8 shadow-lg shadow-emerald-600/20"
+        >
+          <span className="text-white font-bold text-2xl tracking-tighter">B</span>
+        </motion.div>
+
+        {/* Title */}
+        <h1 className="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground">
           BiteSense
         </h1>
-        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-12">
+        <p className="text-lg text-muted-foreground font-medium mt-3">
           Scan. Choose. Eat Smart.
         </p>
 
-        <Link
-          href="/onboarding"
-          className="inline-flex items-center justify-center gap-2 bg-gradient-to-br from-emerald-600 to-emerald-400 text-white rounded-full px-10 py-5 font-semibold text-lg hover:brightness-110 active:scale-95 transition-all duration-300 shadow-lg shadow-emerald-500/25 group"
+        {/* Feature Pills */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex justify-center gap-2 mt-6"
         >
-          Get Started
-          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </div>
+          {features.map((f) => (
+            <span
+              key={f.label}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container text-xs font-medium text-muted-foreground"
+            >
+              <f.icon className="w-3 h-3" />
+              {f.label}
+            </span>
+          ))}
+        </motion.div>
 
-      <div className="absolute bottom-8 text-center text-sm text-muted-foreground z-10">
-        AI-Powered Nutrition Assistant
-      </div>
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="mt-10"
+        >
+          <Link href="/onboarding">
+            <Button size="xl" className="group">
+              Get Started
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+          </Link>
+        </motion.div>
+
+        <p className="text-xs text-muted-foreground/50 mt-6">
+          No account needed · Free to use
+        </p>
+      </motion.div>
     </main>
   );
 }

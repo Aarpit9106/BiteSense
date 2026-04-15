@@ -2,7 +2,7 @@ import { extractMenuFromImage } from "./menuExtractor";
 import { runAgentsPipeline } from "./nutritionAgents";
 import type { AgentAnalysis } from "./nutritionAgents";
 import type { ExtractedMenuItem } from "./menuExtractor";
-import type { OnboardingData } from "@/components/onboarding/OnboardingWizard";
+import type { OnboardingData } from "@/types/onboarding";
 
 export type RecommendationResult = {
   dish: ExtractedMenuItem;

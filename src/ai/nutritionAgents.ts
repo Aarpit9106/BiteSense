@@ -1,5 +1,5 @@
 import type { ExtractedMenuItem } from "./menuExtractor";
-import type { OnboardingData } from "@/components/onboarding/OnboardingWizard";
+import type { OnboardingData } from "@/types/onboarding";
 
 export type AgentAnalysis = {
   dishId: string;

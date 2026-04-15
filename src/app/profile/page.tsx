@@ -1,71 +1,104 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft, User, LogOut, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { User, LogOut, ChevronRight, type LucideIcon, Target, Leaf, Dumbbell, UserCircle } from "lucide-react";
+import { toast } from "sonner";
+import { PageHeader } from "@/components/ui/page-header";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
+
+const PROFILE_ITEMS: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}[] = [
+  { icon: Target, label: "Health Goal", value: "Weight Loss" },
+  { icon: Leaf, label: "Dietary Preference", value: "Non-Veg" },
+  { icon: Dumbbell, label: "Target Macros", value: "High Protein, Low Carb" },
+  { icon: UserCircle, label: "Body Profile", value: "Female, 28y, 70kg, 170cm" },
+];
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
 
 export default function ProfilePage() {
   const router = useRouter();
 
   return (
     <div className="min-h-screen bg-background bio-luminous-bg text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 w-full z-40 bg-background/80 backdrop-blur-xl px-6 py-4 flex items-center gap-4 shadow-sm">
-        <button onClick={() => router.back()} className="text-primary hover:opacity-80">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <span className="text-xl font-bold tracking-tighter text-primary">Profile</span>
-      </header>
+      <PageHeader title="Profile" />
 
-      <main className="px-6 py-8 max-w-xl mx-auto space-y-8">
+      <motion.main
+        variants={stagger}
+        initial="hidden"
+        animate="show"
+        className="px-6 py-8 max-w-xl mx-auto space-y-8"
+      >
         {/* User Info */}
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-4 border-4 border-background shadow-lg">
-            <User className="w-10 h-10" />
-          </div>
-          <h2 className="text-2xl font-bold font-headline">Alex Johnson</h2>
-          <p className="text-muted-foreground mt-1">alex@example.com</p>
-        </div>
-
-        {/* Profile Details List */}
-        <div className="glass-card rounded-[2rem] border border-border/50 overflow-hidden">
-          <div className="p-4 border-b border-border/50 flex justify-between items-center bg-white/30 dark:bg-black/30 hover:bg-white/50 cursor-pointer">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Health Goal</p>
-              <p className="font-semibold">Weight Loss</p>
+        <motion.div variants={fadeUp} className="flex flex-col items-center">
+          <div className="relative">
+            <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full" />
+            <div className="relative w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-muted-foreground border-4 border-background shadow-lg">
+              <User className="w-9 h-9" />
             </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </div>
-          
-          <div className="p-4 border-b border-border/50 flex justify-between items-center bg-white/30 dark:bg-black/30 hover:bg-white/50 cursor-pointer">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Dietary Preference</p>
-              <p className="font-semibold">Non-Veg</p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
-          </div>
+          <h2 className="text-xl font-bold mt-4">Alex Johnson</h2>
+          <p className="text-sm text-muted-foreground">alex@example.com</p>
+          <p className="text-xs text-muted-foreground/60 mt-1">
+            Member since April 2026
+          </p>
+        </motion.div>
 
-          <div className="p-4 border-b border-border/50 flex justify-between items-center bg-white/30 dark:bg-black/30 hover:bg-white/50 cursor-pointer">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Target Macros</p>
-              <p className="font-semibold">High Protein, Low Carb</p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
-          </div>
+        {/* Profile Details */}
+        <motion.div variants={fadeUp}>
+          <GlassCard variant="default" padding="none" className="overflow-hidden divide-y divide-border/30">
+            {PROFILE_ITEMS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.label}
+                  className="w-full p-4 flex items-center gap-3.5 hover:bg-surface-container/50 transition-colors text-left"
+                >
+                  <div className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
+                      {item.label}
+                    </p>
+                    <p className="font-semibold text-sm truncate">{item.value}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0" />
+                </button>
+              );
+            })}
+          </GlassCard>
+        </motion.div>
 
-          <div className="p-4 flex justify-between items-center bg-white/30 dark:bg-black/30 hover:bg-white/50 cursor-pointer">
-            <div>
-              <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Body Profile</p>
-              <p className="font-semibold">Female, 28y, 70kg, 170cm</p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
-          </div>
-        </div>
-
-        {/* Log Out */}
-        <button className="w-full flex justify-center items-center gap-2 p-4 rounded-full border border-red-500/20 text-red-500 bg-red-500/5 hover:bg-red-500/10 transition-colors font-semibold">
-          <LogOut className="w-5 h-5" /> Sign Out
-        </button>
-      </main>
+        {/* Sign Out */}
+        <motion.div variants={fadeUp}>
+          <Button
+            variant="destructive"
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              toast("Signed out", { description: "You've been logged out." });
+              router.push("/");
+            }}
+          >
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </Button>
+        </motion.div>
+      </motion.main>
     </div>
   );
 }

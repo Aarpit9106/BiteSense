@@ -10,16 +10,9 @@ import Step3Preferences from "./Step3Preferences";
 import Step4BodyInfo from "./Step4BodyInfo";
 import Step5Finish from "./Step5Finish";
 
-export type OnboardingData = {
-  goal: string;
-  diet: string;
-  preferences: string[];
-  age: string;
-  gender: string;
-  weight: string;
-  height: string;
-  activityLevel: string;
-};
+// Re-export from canonical location for backward compatibility
+export type { OnboardingData } from "@/types/onboarding";
+import type { OnboardingData } from "@/types/onboarding";
 
 export default function OnboardingWizard() {
   const router = useRouter();
